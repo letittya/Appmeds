@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Appmeds.ShowMedsPage"
+              NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Title Label -->
+            <Label Text="My Medication"
+                   TextColor="DarkOliveGreen"
+                   FontSize="20"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   Margin="0,20,0,0"/>
+
+            <!-- Main Content -->
+            <StackLayout Grid.Row="1">
+                <!-- Your existing content here -->
+
+                <Button Text="Add New Medication"
+                        Clicked="OnAddMedicationClicked"
+                        VerticalOptions="Start"
+                        HorizontalOptions="CenterAndExpand"
+                        Margin="0,20,0,0"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

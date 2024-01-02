@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Appmeds.MainPage"
+              NavigationPage.HasNavigationBar="False"
+             xmlns:local="clr-namespace:Appmeds"
+             BackgroundImageSource="login_back.jpg">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InvertedBooleanConverter x:Key="InvertedBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout>
+
+        <Grid RowSpacing="25" RowDefinitions="Auto,Auto,Auto,Auto">
+            <StackLayout Grid.Row="4">
+                <Label Text="Sign in"
+                       FontSize="25"
+                       TextColor="DarkOliveGreen"
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"/>
+
+                <!-- Username Entry -->
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="15"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame BorderColor="DarkOliveGreen"
+                           BackgroundColor="Transparent"
+                           Margin="1"
+                           Padding="25,0,25,0"
+                           HeightRequest="60"
+                           CornerRadius="50">
+                        <Entry TextColor="DarkOliveGreen"
+                               FontSize="18"
+                               Placeholder="Username"
+                               PlaceholderColor="White" />
+
+                    </Frame>
+
+                </Frame>
+
+                <!-- Password Entry -->
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="15"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame BorderColor="DarkOliveGreen"
+                           BackgroundColor="Transparent"
+                           Margin="1"
+                           Padding="25,0,25,0"
+                           HeightRequest="60"
+                           CornerRadius="50">
+                        <Entry TextColor="DarkOliveGreen"
+                               FontSize="18"
+                               Placeholder="Password"
+                               IsPassword="{Binding Source={x:Reference ShowPasswordCheckBox}, Path=IsChecked, Converter={StaticResource InvertedBooleanConverter}}"
+                               x:Name="EntryPassword"
+                               PlaceholderColor="White" />
+                    </Frame>
+                </Frame>
+
+                <!-- Show Password, Forgot Password, and Log In -->
+                <RelativeLayout Padding="25">
+                    <CheckBox x:Name="ShowPasswordCheckBox"
+              Color="White"
+              IsChecked="False"
+              CheckedChanged="CheckBox_CheckedChanged"
+              Margin="15,0,0,0" />
+                    <Label Text="Show password"
+           TextColor="White"
+           FontSize="18"
+           RelativeLayout.XConstraint="50"
+           RelativeLayout.YConstraint="3" />
+                    <Button x:Name="ForgotPasswordButton"
+            Text="Forgot password?"
+            TextColor="White"
+            FontSize="18"
+            BackgroundColor="Transparent"
+            RelativeLayout.XConstraint="205"
+            RelativeLayout.YConstraint="-8"
+            TextTransform="None"
+            Clicked="ForgotPasswordButton_Clicked"/>
+
+                    <!-- Centering the LoginButton -->
+                    <Button x:Name="LoginButton"
+            Text="Log in"
+            TextColor="White"
+            FontSize="18"
+            BackgroundColor="DarkOliveGreen"
+            CornerRadius="50"
+            Clicked="OnLoginButtonClicked"
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-50}"
+            RelativeLayout.YConstraint="50"/>
+                </RelativeLayout>
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+</ContentPage>

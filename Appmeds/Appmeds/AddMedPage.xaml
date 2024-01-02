@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Appmeds.AddMedPage"
+             Title="Add New Medication">
+
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            <!-- Medication Name Entry -->
+            <Entry Placeholder="Medication Name" x:Name="MedicationNameEntry" />
+
+            <!-- Dosage Entry -->
+            <Entry Placeholder="Dosage (mg)" x:Name="DosageEntry" Keyboard="Numeric" />
+
+            <!-- Number of Pills Entry -->
+            <Entry Placeholder="Number of Pills" x:Name="NumberOfPillsEntry" Keyboard="Numeric" />
+
+            <!-- Time Picker -->
+            <TimePicker x:Name="TimePicker" Format="hh:mm" />
+
+            <!-- Add Button -->
+            <Button Text="Add"
+                    Clicked="OnAddButtonClicked"
+                    BackgroundColor="DarkOliveGreen"
+                    TextColor="White"
+                    CornerRadius="5"
+                    Margin="0,20,0,0"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
