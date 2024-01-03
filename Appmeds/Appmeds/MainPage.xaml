@@ -38,6 +38,8 @@
                         <Entry TextColor="DarkOliveGreen"
                                FontSize="18"
                                Placeholder="Username"
+                               x:Name="txtemail"
+                               Text="{Binding txtemail}"
                                PlaceholderColor="White" />
 
                     </Frame>
@@ -61,7 +63,8 @@
                                FontSize="18"
                                Placeholder="Password"
                                IsPassword="{Binding Source={x:Reference ShowPasswordCheckBox}, Path=IsChecked, Converter={StaticResource InvertedBooleanConverter}}"
-                               x:Name="EntryPassword"
+                               x:Name="txtpassword"
+                               Text="{Binding txtpassword}"
                                PlaceholderColor="White" />
                     </Frame>
                 </Frame>
@@ -95,7 +98,7 @@
             FontSize="18"
             BackgroundColor="DarkOliveGreen"
             CornerRadius="50"
-            Clicked="OnLoginButtonClicked"
+            Command="{Binding LoginCommand}"
             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-50}"
             RelativeLayout.YConstraint="50"/>
                 </RelativeLayout>

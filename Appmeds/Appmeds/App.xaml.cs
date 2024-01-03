@@ -14,7 +14,7 @@ namespace Appmeds
             {
                 BarBackgroundColor = Color.DarkOliveGreen,
             };
-
+            
             // Hide the navigation bar for the MainPage
             NavigationPage.SetHasNavigationBar(MainPage, false);
 

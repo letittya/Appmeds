@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Appmeds.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,14 +14,7 @@ namespace Appmeds
         public MainPage()
         {
             InitializeComponent();
-        }
-
-        private async void OnLoginButtonClicked(object sender, EventArgs e)
-        {
-            // You can add validation logic here if needed
-
-            // Navigate to ShowMedsPage
-            await Navigation.PushAsync(new ShowMedsPage());
+            BindingContext = new LoginViewModel(Navigation);
         }
 
         private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
