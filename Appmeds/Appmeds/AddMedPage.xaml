@@ -2,21 +2,102 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Appmeds.AddMedPage"
-             Title="Add New Medication">
+             Title="Add New Medication"
+             BackgroundColor="#d0dcc4">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Reusable Style for Inner Frame -->
+            <Style x:Key="InnerFrameStyle" TargetType="Frame">
+                <Setter Property="BorderColor" Value="DarkOliveGreen" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="Padding" Value="25,0,25,0" />
+                <Setter Property="HeightRequest" Value="60" />
+                <Setter Property="CornerRadius" Value="50" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout Margin="20">
             <!-- Medication Name Entry -->
-            <Entry Placeholder="Medication Name" x:Name="MedicationNameEntry" />
+            <StackLayout Orientation="Vertical" Margin="0,0,0,10">
+                <Label Text="Medication Name" FontSize="16"/>
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="10"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame Style="{StaticResource InnerFrameStyle}">
+                        <Entry TextColor="DarkOliveGreen"
+                               FontSize="18"
+                               Placeholder="Name"
+                               PlaceholderColor="Black"
+                                x:Name="MedicationNameEntry"/>
+                    </Frame>
+
+                </Frame>
+            </StackLayout>
 
             <!-- Dosage Entry -->
-            <Entry Placeholder="Dosage (mg)" x:Name="DosageEntry" Keyboard="Numeric" />
+            <StackLayout Orientation="Vertical" Margin="0,0,0,10">
+                <Label Text="Dosage (mg)" FontSize="16" />
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="10"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame Style="{StaticResource InnerFrameStyle}">
+                        <Entry TextColor="DarkOliveGreen"
+                               FontSize="18"
+                               Placeholder="Dosage"
+                               Keyboard="Numeric"
+                               PlaceholderColor="Black"
+                                x:Name="DosageEntry"/>
+                    </Frame>
+
+                </Frame>
+            </StackLayout>
 
             <!-- Number of Pills Entry -->
-            <Entry Placeholder="Number of Pills" x:Name="NumberOfPillsEntry" Keyboard="Numeric" />
+            <StackLayout Orientation="Vertical" Margin="0,0,0,10">
+                <Label Text="Number of Pills" FontSize="16" />
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="10"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame Style="{StaticResource InnerFrameStyle}">
+                        <Entry TextColor="DarkOliveGreen"
+                               FontSize="18"
+                               Placeholder="Number"
+                               Keyboard="Numeric"
+                                PlaceholderColor="Black"
+                                x:Name="NumberOfPillsEntry"/>
+                    </Frame>
+
+                </Frame>
+            </StackLayout>
 
             <!-- Time Picker -->
-            <TimePicker x:Name="TimePicker" Format="hh:mm" />
+            <StackLayout Orientation="Vertical" Margin="0,0,0,10">
+                <Label Text="Time" FontSize="16" />
+                <Frame BorderColor="DarkOliveGreen"
+                       BackgroundColor="Transparent"
+                       Margin="15"
+                       Padding="0"
+                       CornerRadius="50">
+
+                    <Frame Style="{StaticResource InnerFrameStyle}">
+                        <TimePicker x:Name="TimePicker" Format="hh:mm" TextColor="Black" />
+                    </Frame>
+
+                </Frame>
+            </StackLayout>
 
             <!-- Add Button -->
             <Button Text="Add"
@@ -28,3 +109,4 @@
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
+
