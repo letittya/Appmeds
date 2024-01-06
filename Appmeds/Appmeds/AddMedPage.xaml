@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Appmeds.AddMedPage"
              Title="Add New Medication"
-             BackgroundColor="#d0dcc4">
+             BackgroundColor="#d0dcc4"
+             >
+
 
     <ContentPage.Resources>
         <ResourceDictionary>

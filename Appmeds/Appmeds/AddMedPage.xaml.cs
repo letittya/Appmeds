@@ -30,5 +30,7 @@ namespace Appmeds
             // Pass the data to the ShowMedsPage
             await Navigation.PushAsync(new ShowMedsPage(newMedication));
         }
+
+     
     }
 }

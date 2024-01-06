@@ -14,12 +14,19 @@ namespace Appmeds
         public MainPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false); // Hide navigation bar for MainPage
             BindingContext = new LoginViewModel(Navigation);
         }
 
         private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
 
+        }
+
+        private async void SignUpLabel_Tapped(object sender, EventArgs e)
+        {
+            // Navigate to SignupPage.xaml
+            await Navigation.PushAsync(new SignupPage());
         }
 
         private void ForgotPasswordButton_Clicked(object sender, EventArgs e)
