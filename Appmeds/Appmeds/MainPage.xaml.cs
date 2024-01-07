@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
+
 namespace Appmeds
 {
     public partial class MainPage : ContentPage
@@ -26,7 +27,7 @@ namespace Appmeds
         private async void SignUpLabel_Tapped(object sender, EventArgs e)
         {
             // Navigate to SignupPage.xaml
-            await Navigation.PushAsync(new SignupPage());
+            await Navigation.PushAsync(new RegisterPage());
         }
 
         private void ForgotPasswordButton_Clicked(object sender, EventArgs e)

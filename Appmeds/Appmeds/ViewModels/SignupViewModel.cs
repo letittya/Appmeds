@@ -9,13 +9,10 @@ namespace Appmeds.ViewModels
 {
     public class SignupViewModel : BaseViewModel
     {
-        #region Attributes
         private string email;
         private string password;
         private string confirmPassword;
-        #endregion
 
-        #region Properties
         public string TxtSignUpEmail
         {
             get { return email; }
@@ -33,14 +30,16 @@ namespace Appmeds.ViewModels
             get { return confirmPassword; }
             set { SetValue(ref confirmPassword, value); }
         }
-        #endregion
 
-        #region Command
         public Command SignUpCommand { get; }
-        #endregion
 
-        #region Method
-        public async Task SignUpUser()
+        public SignupViewModel(INavigation navigation)
+        {
+            Navigation = navigation;
+            SignUpCommand = new Command(async () => await SignUpUser());
+        }
+
+        private async Task SignUpUser()
         {
             if (password != confirmPassword)
             {
@@ -48,33 +47,19 @@ namespace Appmeds.ViewModels
                 return;
             }
 
-            var newUser = new UserModel()
-            {
-                EmailField = email,
-                PasswordField = password,
-            };
-
             try
             {
-                var authentication = new FirebaseAuthProvider(new FirebaseConfig(DBConn.WebApyAuthentication));
-                var authResult = await authentication.CreateUserWithEmailAndPasswordAsync(newUser.EmailField, newUser.PasswordField);
+                var authProvider = new FirebaseAuthProvider(new FirebaseConfig(DBConn.WebApyAuthentication));
+                var auth = await authProvider.CreateUserWithEmailAndPasswordAsync(email, password);
+                // Optionally, you can store additional user data in the database here
 
-                // Additional logic after successful signup if needed
-
-                await App.Current.MainPage.DisplayAlert("Success", "Account created successfully", "OK");
+                await App.Current.MainPage.DisplayAlert("Success", "User registered successfully", "OK");
+                App.Current.MainPage = new NavigationPage(new MainPage());
             }
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
-        #endregion
-
-        #region Constructor
-        public SignupViewModel()
-        {
-            SignUpCommand = new Command(async () => await SignUpUser());
-        }
-        #endregion
     }
 }

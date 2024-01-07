@@ -51,7 +51,7 @@ namespace Appmeds.ViewModels
 
                 var Properties_NavigationPage = new NavigationPage(new ShowMedsPage());
 
-                Properties_NavigationPage.BarBackgroundColor = Color.RoyalBlue;
+                Properties_NavigationPage.BarBackgroundColor = Color.DarkOliveGreen;
                 App.Current.MainPage = Properties_NavigationPage;
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Appmeds.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace Appmeds
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SignupPage : ContentPage
+    public partial class RegisterPage : ContentPage
     {
-        public SignupPage()
+        public RegisterPage()
         {
             InitializeComponent();
+            BindingContext = new SignupViewModel(Navigation);
         }
     }
 }
