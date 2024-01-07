@@ -92,9 +92,28 @@
                     </Frame>
                 </Frame>
 
+                <!-- Checkbox show pass -->
+                <RelativeLayout Padding="5">
+                    <CheckBox x:Name="ShowPasswordCheckBox"
+   Color="White"
+   IsChecked="False"
+   Margin="0,0,0,0"
+   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.05}"
+   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=-0.1}" />
+                    <Label Text="Show password"
+TextColor="White"
+FontSize="18"
+RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
+RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.0}" />
+                </RelativeLayout>
+
+
+
+
+
                 <!-- Sign Up Button -->
                 <RelativeLayout Padding="25">
-                    <!-- Centering the SignUpButton -->
+        
                     <Button x:Name="SignUpButton"
                             Text="Sign Up"
                             TextColor="White"
@@ -103,7 +122,7 @@
                             CornerRadius="50"
                             Command="{Binding SignUpCommand}"
                             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-50}"
-                            RelativeLayout.YConstraint="20"/>
+                            RelativeLayout.YConstraint="0"/>
                 </RelativeLayout>
             </StackLayout>
         </Grid>

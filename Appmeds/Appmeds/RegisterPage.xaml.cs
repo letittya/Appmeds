@@ -17,6 +17,21 @@ namespace Appmeds
         {
             InitializeComponent();
             BindingContext = new SignupViewModel(Navigation);
+
+         
+
+            ShowPasswordCheckBox.CheckedChanged += OnShowPasswordCheckBoxChanged;
         }
+
+        private void OnShowPasswordCheckBoxChanged(object sender, CheckedChangedEventArgs e)
+        {
+            txtSignUpPassword.IsPassword = !e.Value;
+            txtConfirmPassword.IsPassword = !e.Value;
+        }
+
+
+
     }
+
+
 }
