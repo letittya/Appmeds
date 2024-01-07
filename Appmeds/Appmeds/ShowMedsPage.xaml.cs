@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Firebase.Database;
+using Firebase.Database.Query;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,51 +11,56 @@ namespace Appmeds
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShowMedsPage : ContentPage
     {
+        private readonly FirebaseClient firebase = new FirebaseClient("https://msap-14332-default-rtdb.europe-west1.firebasedatabase.app/"); // Replace with your Firebase URL
+
         public ShowMedsPage()
         {
             InitializeComponent();
-
-            // Handle the case where no medication details are provided
-            DisplayAlert("Hi!", "No medication details provided yet.", "OK");
         }
 
-        public ShowMedsPage(Medication newMedication) : this()
+        protected override async void OnAppearing()
         {
-            // Process the newMedication details here
-            if (newMedication != null)
+            base.OnAppearing();
+            await LoadMedications(); // Refresh medication list every time the page appears
+        }
+
+        private async Task LoadMedications()
+        {
+            medicationsLayout.Children.Clear(); // Clear existing medication entries
+
+            var userId = Application.Current.Properties["UserId"] as string;
+            var medications = await firebase
+                                    .Child("Users")
+                                    .Child(userId)
+                                    .Child("Medications")
+                                    .OnceAsync<Medication>();
+
+            foreach (var medication in medications)
             {
-                DisplayMedicationDetails(newMedication);
+                DisplayMedicationDetails(medication.Object);
             }
-        }
-
-        private async void OnAddMedicationClicked(object sender, EventArgs e)
-        {
-            // You can add validation logic here if needed
-
-            // Navigate to ShowMedsPage
-            await Navigation.PushAsync(new AddMedPage());
         }
 
         private void DisplayMedicationDetails(Medication medication)
         {
-            // Add your logic to display the medication details on the page
-            // For example, you might use labels to display the data
             Label medicationLabel = new Label
             {
                 Text = $"Medication Name: {medication.MedicationName}\n" +
                        $"Dosage: {medication.Dosage} mg\n" +
                        $"Number of Pills: {medication.NumberOfPills}\n" +
                        $"Time: {medication.Time.ToString("hh\\:mm")}",
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                Margin = new Thickness(10)
             };
 
-            // Add the label to your layout (e.g., StackLayout)
-            // stackLayout.Children.Add(medicationLabel);
+            // Assuming you have a StackLayout named 'medicationsLayout' for displaying medication details
+            medicationsLayout.Children.Add(medicationLabel);
+        }
+
+        private async void OnAddMedicationClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AddMedPage());
         }
     }
-
-
 }
-
-

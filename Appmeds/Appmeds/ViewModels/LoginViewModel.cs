@@ -48,6 +48,8 @@ namespace Appmeds.ViewModels
                 var authentication = new FirebaseAuthProvider(new FirebaseConfig(DBConn.WebApyAuthentication));
                 var authuser = await authentication.SignInWithEmailAndPasswordAsync(objuser.EmailField.ToString(), objuser.PasswordField.ToString());
                 string obternertoken = authuser.FirebaseToken;
+                string userId = authuser.User.LocalId; // This is the unique user ID
+                Application.Current.Properties["UserId"] = userId; // Storing user ID for later use
 
                 var Properties_NavigationPage = new NavigationPage(new ShowMedsPage());
 
