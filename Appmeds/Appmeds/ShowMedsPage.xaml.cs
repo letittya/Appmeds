@@ -43,20 +43,46 @@ namespace Appmeds
 
         private void DisplayMedicationDetails(Medication medication)
         {
+            var formattedString = new FormattedString();
+
+            // First line with larger font and bold
+            formattedString.Spans.Add(new Span
+            {
+                Text = $"{medication.MedicationName} {medication.Dosage} mg\n",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) * 1.5, // Double the default medium size
+                FontAttributes = FontAttributes.Bold
+            });
+
+            // Remaining lines with normal font
+            formattedString.Spans.Add(new Span
+            {
+                Text = $"{medication.Time.ToString("hh\\:mm")}\n" +
+                       $"{medication.NumberOfPills} pills left",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
+            });
+
             Label medicationLabel = new Label
             {
-                Text = $"Medication Name: {medication.MedicationName}\n" +
-                       $"Dosage: {medication.Dosage} mg\n" +
-                       $"Number of Pills: {medication.NumberOfPills}\n" +
-                       $"Time: {medication.Time.ToString("hh\\:mm")}",
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                Margin = new Thickness(10)
+                FormattedText = formattedString,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.Start, // Align text to the left
+                Margin = new Thickness(10, 0, 0, 0) // Left margin for text
             };
 
-            // Assuming you have a StackLayout named 'medicationsLayout' for displaying medication details
-            medicationsLayout.Children.Add(medicationLabel);
+            Frame frame = new Frame
+            {
+                Content = medicationLabel,
+                CornerRadius = 20,
+                Margin = new Thickness(10),
+                Padding = new Thickness(10),
+                BackgroundColor = Color.FromHex("#FFC0CB"), // Pale red background
+                BorderColor = Color.Gray
+            };
+
+            medicationsLayout.Children.Add(frame);
         }
+
+
 
         private async void OnAddMedicationClicked(object sender, EventArgs e)
         {
