@@ -65,18 +65,41 @@ namespace Appmeds
             {
                 FormattedText = formattedString,
                 VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.Start, // Align text to the left
-                Margin = new Thickness(10, 0, 0, 0) // Left margin for text
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                Margin = new Thickness(10, 0, 0, 0)
             };
 
+            // Create a CheckBox with adjusted margin and scale
+            CheckBox checkbox = new CheckBox
+            {
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End,
+                Scale = 1.2, // Slightly increased size
+                Margin = new Thickness(0, 0, 20, 0) // Adjusted margin to move it a bit to the left
+            };
+
+            // Create a horizontal layout to hold the label and the checkbox
+            StackLayout horizontalLayout = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Children = { medicationLabel, checkbox }
+            };
+
+            // Create a frame
             Frame frame = new Frame
             {
-                Content = medicationLabel,
+                Content = horizontalLayout,
                 CornerRadius = 20,
                 Margin = new Thickness(10),
                 Padding = new Thickness(10),
-                BackgroundColor = Color.FromHex("#FFC0CB"), // Pale red background
+                BackgroundColor = Color.FromHex("#FFC0CB"),
                 BorderColor = Color.Gray
+            };
+
+            // Attach the CheckedChanged event handler to the checkbox
+            checkbox.CheckedChanged += (sender, args) => {
+                frame.BackgroundColor = args.Value ? Color.FromHex("#BFD8B8") : Color.FromHex("#FFC0CB");
             };
 
             medicationsLayout.Children.Add(frame);
