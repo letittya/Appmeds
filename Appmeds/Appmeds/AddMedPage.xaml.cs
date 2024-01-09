@@ -1,4 +1,5 @@
-﻿using Firebase.Database;
+﻿using Appmeds.Services;
+using Firebase.Database;
 using Firebase.Database.Query;
 using System;
 using Xamarin.Forms;
@@ -36,6 +37,8 @@ namespace Appmeds
             };
 
             var userId = Application.Current.Properties["UserId"] as string;
+            DateTime notifyTime = DateTime.Today.Add(time); // Combine today's date with the time picked
+            DependencyService.Get<INotificationManager>().ScheduleNotification(medicationName, "Time to take your medication.", notifyTime);
 
             // Save to Firebase
             await firebase

@@ -90,7 +90,7 @@ namespace Appmeds
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Start,
                 Scale = 1.2,
-                Margin = new Thickness(0, 0, 10, 0), // Adjust as needed
+                Margin = new Thickness(0, 0, 10, 0),
                 IsChecked = medication.IsTaken // Set the initial state of the checkbox
             };
 
@@ -111,7 +111,7 @@ namespace Appmeds
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Children = { checkbox, medicationLabel, iconLayout },
-                Spacing = 10, // Adjust spacing as needed
+                Spacing = 10, // Adjust spacing
             };
 
             Frame frame = new Frame
@@ -205,12 +205,18 @@ namespace Appmeds
                     .Child("Users")
                     .Child(userId)
                     .Child("Medications")
-                    .Child(medication.Key) // Use the key to reference the medication
+                    .Child(medication.Key) // use key to reference the medication
                     .DeleteAsync();
 
-                await LoadMedications(); // Refresh the list to update the UI
+                await LoadMedications(); // refresh the list to update the UI
             }   
         }
+
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new MainPage()); 
+        }
+
 
         private async void OnAddMedicationClicked(object sender, EventArgs e)
         {

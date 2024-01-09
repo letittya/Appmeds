@@ -12,6 +12,17 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!-- Logout ImageButton -->
+            <ImageButton Grid.Row="0" Grid.Column="0"
+                 Source="logout_button.png"
+                 Clicked="OnLogoutClicked"
+                 BackgroundColor="Transparent"
+                 Margin="10"
+                 WidthRequest="25"
+                 HeightRequest="25"
+                 HorizontalOptions="Start"
+                 VerticalOptions="Start"/>
+
             <!-- Title Label -->
             <Label Grid.Row="0"
                    Text="My Medication"

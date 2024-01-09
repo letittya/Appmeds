@@ -1,4 +1,5 @@
-﻿using Firebase.Database;
+﻿using Appmeds.Services;
+using Firebase.Database;
 using Firebase.Database.Query;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,9 @@ namespace Appmeds
 
             // Update in Firebase
             var userId = Application.Current.Properties["UserId"] as string;
+            DateTime notifyTime = DateTime.Today.Add(_medication.Time); // Combine today's date with the time picked
+            DependencyService.Get<INotificationManager>().ScheduleNotification(_medication.MedicationName, "Time to take your medication.", notifyTime);
+
             await _firebase
                 .Child("Users")
                 .Child(userId)
