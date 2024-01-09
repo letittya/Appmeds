@@ -18,8 +18,8 @@ namespace Appmeds
         {
             // Retrieve values from the form
             string medicationName = MedicationNameEntry.Text;
-            int dosage = Convert.ToInt32(DosageEntry.Text);
-            int numberOfPills = Convert.ToInt32(NumberOfPillsEntry.Text);
+            double dosage = Convert.ToDouble(DosageEntry.Text);
+            double numberOfPills = Convert.ToDouble(NumberOfPillsEntry.Text);
             TimeSpan time = TimePicker.Time;
 
             // Create a new Medication object
@@ -39,7 +39,7 @@ namespace Appmeds
                 .Child("Medications")
                 .PostAsync(newMedication);
 
-            // Optionally, navigate back or show a confirmation message
+            // navigate back or show a confirmation message
             await DisplayAlert("Success", "Medication added successfully", "OK");
             await Navigation.PopAsync(); // Goes back to the previous page
         }

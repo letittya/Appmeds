@@ -1,4 +1,5 @@
-﻿using Firebase.Database;
+﻿using Appmeds.Services;
+using Firebase.Database;
 using Firebase.Database.Query;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,29 @@ namespace Appmeds
             foreach (var medication in medications)
             {
                 DisplayMedicationDetails(medication.Object);
+                ScheduleMedicationNotification(medication.Object);
             }
         }
+        private void ScheduleMedicationNotification(Medication medication)
+        {
+            var notificationManager = DependencyService.Get<INotificationManager>();
+
+            // Calculate the next occurrence of medication time
+            DateTime now = DateTime.Now;
+            DateTime medicationDateTime = new DateTime(now.Year, now.Month, now.Day, medication.Time.Hours, medication.Time.Minutes, medication.Time.Seconds);
+            if (medicationDateTime < now)
+            {
+                // If the time has already passed today, schedule for the next day
+                medicationDateTime = medicationDateTime.AddDays(1);
+            }
+
+            string title = "Medication Reminder";
+            string message = $"Time to take your {medication.MedicationName}, {medication.Dosage} mg.";
+
+            notificationManager.ScheduleNotification(title, message, medicationDateTime);
+        }
+
+
 
         private void DisplayMedicationDetails(Medication medication)
         {

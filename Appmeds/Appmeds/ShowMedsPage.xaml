@@ -31,7 +31,8 @@
                              HorizontalOptions="CenterAndExpand"
                              Margin="260,-4,0,30"
                              HeightRequest="40"
-                             WidthRequest="50" />
+                             WidthRequest="50"
+                             BackgroundColor="#d0dcc4"/>
             </StackLayout>
 
             <!-- StackLayout to Display Medications -->
