@@ -12,7 +12,7 @@ namespace Appmeds
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShowMedsPage : ContentPage
     {
-        private readonly FirebaseClient firebase = new FirebaseClient("https://msap-14332-default-rtdb.europe-west1.firebasedatabase.app/"); // Replace with your Firebase URL
+        private readonly FirebaseClient firebase = new FirebaseClient("https://msap-14332-default-rtdb.europe-west1.firebasedatabase.app/");
 
         public ShowMedsPage()
         {
@@ -22,60 +22,39 @@ namespace Appmeds
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await LoadMedications(); // Refresh medication list every time the page appears
+            await LoadMedications();
         }
 
         private async Task LoadMedications()
         {
-            medicationsLayout.Children.Clear(); // Clear existing medication entries
+            medicationsLayout.Children.Clear();
 
             var userId = Application.Current.Properties["UserId"] as string;
             var medications = await firebase
-                                    .Child("Users")
-                                    .Child(userId)
-                                    .Child("Medications")
-                                    .OnceAsync<Medication>();
+                                        .Child("Users")
+                                        .Child(userId)
+                                        .Child("Medications")
+                                        .OnceAsync<Medication>();
 
             foreach (var medication in medications)
             {
-                DisplayMedicationDetails(medication.Object);
-                ScheduleMedicationNotification(medication.Object);
+                var medicationWithKey = medication.Object;
+                medicationWithKey.Key = medication.Key; // Set the Firebase key
+                DisplayMedicationDetails(medicationWithKey);
             }
         }
-        private void ScheduleMedicationNotification(Medication medication)
-        {
-            var notificationManager = DependencyService.Get<INotificationManager>();
-
-            // Calculate the next occurrence of medication time
-            DateTime now = DateTime.Now;
-            DateTime medicationDateTime = new DateTime(now.Year, now.Month, now.Day, medication.Time.Hours, medication.Time.Minutes, medication.Time.Seconds);
-            if (medicationDateTime < now)
-            {
-                // If the time has already passed today, schedule for the next day
-                medicationDateTime = medicationDateTime.AddDays(1);
-            }
-
-            string title = "Medication Reminder";
-            string message = $"Time to take your {medication.MedicationName}, {medication.Dosage} mg.";
-
-            notificationManager.ScheduleNotification(title, message, medicationDateTime);
-        }
-
-
 
         private void DisplayMedicationDetails(Medication medication)
         {
             var formattedString = new FormattedString();
 
-            // First line with larger font and bold
             formattedString.Spans.Add(new Span
             {
                 Text = $"{medication.MedicationName} {medication.Dosage} mg\n",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) * 1.5, // Double the default medium size
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) * 1.5,
                 FontAttributes = FontAttributes.Bold
             });
 
-            // Remaining lines with normal font
             formattedString.Spans.Add(new Span
             {
                 Text = $"{medication.Time.ToString("hh\\:mm")}\n" +
@@ -91,24 +70,36 @@ namespace Appmeds
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-            // Create a CheckBox with adjusted margin and scale
+          
+
             CheckBox checkbox = new CheckBox
             {
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.End,
-                Scale = 1.2, // Slightly increased size
-                Margin = new Thickness(0, 0, 20, 0) // Adjusted margin to move it a bit to the left
+                HorizontalOptions = LayoutOptions.Start,
+                Scale = 1.2,
+                Margin = new Thickness(0, 0, 10, 0) // Adjust as needed
             };
 
-            // Create a horizontal layout to hold the label and the checkbox
+            Image editIcon = CreateIcon("edit_green.png", () => EditMedication(medication));
+            Image deleteIcon = CreateIcon("delete_green.png", () => DeleteMedication(medication));
+
+            StackLayout iconLayout = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                Children = { editIcon, deleteIcon },
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center
+            };
+
+            // Create the horizontal layout
             StackLayout horizontalLayout = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Children = { medicationLabel, checkbox }
+                Children = { checkbox, medicationLabel, iconLayout },
+                Spacing = 10 // Adjust spacing as needed
             };
 
-            // Create a frame
             Frame frame = new Frame
             {
                 Content = horizontalLayout,
@@ -119,7 +110,6 @@ namespace Appmeds
                 BorderColor = Color.Gray
             };
 
-            // Attach the CheckedChanged event handler to the checkbox
             checkbox.CheckedChanged += (sender, args) => {
                 frame.BackgroundColor = args.Value ? Color.FromHex("#BFD8B8") : Color.FromHex("#FFC0CB");
             };
@@ -127,7 +117,43 @@ namespace Appmeds
             medicationsLayout.Children.Add(frame);
         }
 
+        private Image CreateIcon(string imageName, Action tapAction)
+        {
+            Image icon = new Image
+            {
+                Source = imageName,
+                HeightRequest = 30,
+                WidthRequest = 30,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End
+            };
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += (s, e) => tapAction();
+            icon.GestureRecognizers.Add(tapGesture);
+            return icon;
+        }
 
+        private void EditMedication(Medication medication)
+        {
+            // Logic for editing medication
+        }
+
+        private async void DeleteMedication(Medication medication)
+        {
+            var isUserSure = await DisplayAlert("Confirm Delete", $"Are you sure you want to delete {medication.MedicationName}?", "Yes", "No");
+            if (isUserSure)
+            {
+                var userId = Application.Current.Properties["UserId"] as string;
+                await firebase
+                    .Child("Users")
+                    .Child(userId)
+                    .Child("Medications")
+                    .Child(medication.Key) // Use the key to reference the medication
+                    .DeleteAsync();
+
+                await LoadMedications(); // Refresh the list to update the UI
+            }
+        }
 
         private async void OnAddMedicationClicked(object sender, EventArgs e)
         {
