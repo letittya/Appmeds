@@ -11,5 +11,7 @@ namespace Appmeds
         public double Dosage { get; set; }
         public double NumberOfPills { get; set; }
         public TimeSpan Time { get; set; }
+        public bool IsTaken { get; set; } // Flag to track if medication is taken
     }
 }
+

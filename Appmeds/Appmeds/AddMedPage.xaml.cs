@@ -26,14 +26,15 @@ namespace Appmeds
             double numberOfPills = Convert.ToDouble(NumberOfPillsEntry.Text);
             TimeSpan time = TimePicker.Time;
 
-            // Create a new Medication object
             Medication newMedication = new Medication
             {
                 MedicationName = medicationName,
                 Dosage = dosage,
                 NumberOfPills = numberOfPills,
-                Time = time
+                Time = time,
+                IsTaken = false // Set default as not taken
             };
+
             var userId = Application.Current.Properties["UserId"] as string;
 
             // Save to Firebase

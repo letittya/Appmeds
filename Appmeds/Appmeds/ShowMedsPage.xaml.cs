@@ -3,6 +3,7 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -30,19 +31,31 @@ namespace Appmeds
             medicationsLayout.Children.Clear();
 
             var userId = Application.Current.Properties["UserId"] as string;
-            var medications = await firebase
-                                        .Child("Users")
-                                        .Child(userId)
-                                        .Child("Medications")
-                                        .OnceAsync<Medication>();
+            var firebaseMedications = await firebase
+                                                .Child("Users")
+                                                .Child(userId)
+                                                .Child("Medications")
+                                                .OnceAsync<Medication>();
 
-            foreach (var medication in medications)
+            var sortedMedications = firebaseMedications
+                                    .Select(fm => new Medication
+                                    {
+                                        Key = fm.Key, // Extract the key
+                                        MedicationName = fm.Object.MedicationName,
+                                        Dosage = fm.Object.Dosage,
+                                        NumberOfPills = fm.Object.NumberOfPills,
+                                        Time = fm.Object.Time,
+                                        IsTaken = fm.Object.IsTaken
+                                    })
+                                    .OrderBy(m => m.IsTaken) // Sort based on IsTaken
+                                    .ToList();
+
+            foreach (var medication in sortedMedications)
             {
-                var medicationWithKey = medication.Object;
-                medicationWithKey.Key = medication.Key; // Set the Firebase key
-                DisplayMedicationDetails(medicationWithKey);
+                DisplayMedicationDetails(medication);
             }
         }
+
 
         private void DisplayMedicationDetails(Medication medication)
         {
@@ -70,14 +83,15 @@ namespace Appmeds
                 Margin = new Thickness(10, 0, 0, 0)
             };
 
-          
+
 
             CheckBox checkbox = new CheckBox
             {
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Start,
                 Scale = 1.2,
-                Margin = new Thickness(0, 0, 10, 0) // Adjust as needed
+                Margin = new Thickness(0, 0, 10, 0), // Adjust as needed
+                IsChecked = medication.IsTaken // Set the initial state of the checkbox
             };
 
             Image editIcon = CreateIcon("edit_green.png", () => EditMedication(medication));
@@ -97,7 +111,7 @@ namespace Appmeds
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Children = { checkbox, medicationLabel, iconLayout },
-                Spacing = 10 // Adjust spacing as needed
+                Spacing = 10, // Adjust spacing as needed
             };
 
             Frame frame = new Frame
@@ -106,16 +120,58 @@ namespace Appmeds
                 CornerRadius = 20,
                 Margin = new Thickness(10),
                 Padding = new Thickness(10),
-                BackgroundColor = Color.FromHex("#FFC0CB"),
+                BackgroundColor = medication.IsTaken ? Color.FromHex("#BFD8B8") : Color.FromHex("#FFC0CB"),
                 BorderColor = Color.Gray
             };
 
-            checkbox.CheckedChanged += (sender, args) => {
-                frame.BackgroundColor = args.Value ? Color.FromHex("#BFD8B8") : Color.FromHex("#FFC0CB");
+            checkbox.CheckedChanged += async (sender, args) =>
+            {
+                if (sender is CheckBox cb)
+                {
+                    if (cb.IsChecked)
+                    {
+                        // When checked
+                        medication.IsTaken = true;
+                        frame.BackgroundColor = Color.FromHex("#BFD8B8"); // Change to green
+                        medication.NumberOfPills--;
+
+                        if (medication.NumberOfPills <= 0)
+                        {
+                            medication.NumberOfPills = 0; // Prevent going below 0
+                            await DisplayAlert("Alert", $"You ran out of {medication.MedicationName}", "OK");
+                        }
+                    }
+                    else
+                    {
+                        // When unchecked
+                        medication.IsTaken = false;
+                        frame.BackgroundColor = Color.FromHex("#FFC0CB"); // Change back to red
+                    }
+
+                    await UpdateMedicationStatus(medication.Key, medication);
+                    await LoadMedications(); // Reload medications to update the UI
+                }
             };
+
+
+
+
 
             medicationsLayout.Children.Add(frame);
         }
+
+        private async Task UpdateMedicationStatus(string key, Medication updatedMedication)
+        {
+            var userId = Application.Current.Properties["UserId"] as string;
+            await firebase
+                .Child("Users")
+                .Child(userId)
+                .Child("Medications")
+                .Child(key)
+                .PutAsync(updatedMedication);
+        }
+
+
 
         private Image CreateIcon(string imageName, Action tapAction)
         {
@@ -153,7 +209,7 @@ namespace Appmeds
                     .DeleteAsync();
 
                 await LoadMedications(); // Refresh the list to update the UI
-            }
+            }   
         }
 
         private async void OnAddMedicationClicked(object sender, EventArgs e)
