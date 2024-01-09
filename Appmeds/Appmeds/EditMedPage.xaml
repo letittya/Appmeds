@@ -1,15 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Appmeds.AddMedPage"
-             Title="Add New Medication"
-             BackgroundColor="#d0dcc4"
-             >
-
+             x:Class="Appmeds.EditMedPage"
+             Title="Edit Medication"
+             BackgroundColor="#d0dcc4">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!-- Reusable Style for Inner Frame -->
             <Style x:Key="InnerFrameStyle" TargetType="Frame">
                 <Setter Property="BorderColor" Value="DarkOliveGreen" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
@@ -27,17 +24,17 @@
             <StackLayout Orientation="Vertical" Margin="0,0,0,10">
                 <Label Text="Medication Name" FontSize="16"/>
                 <Frame BorderColor="DarkOliveGreen"
-                       BackgroundColor="Transparent"
-                       Margin="10"
-                       Padding="0"
-                       CornerRadius="50">
+           BackgroundColor="Transparent"
+           Margin="10"
+           Padding="0"
+           CornerRadius="50">
 
                     <Frame Style="{StaticResource InnerFrameStyle}">
                         <Entry TextColor="Black"
-                               FontSize="18"
-                               Placeholder="Name"
-                               PlaceholderColor="DarkOliveGreen"
-                                x:Name="MedicationNameEntry"/>
+                   FontSize="18"
+                   Placeholder="Name"
+                   PlaceholderColor="DarkOliveGreen"
+                    x:Name="MedicationNameEntry"/>
                     </Frame>
 
                 </Frame>
@@ -47,18 +44,18 @@
             <StackLayout Orientation="Vertical" Margin="0,0,0,10">
                 <Label Text="Dosage (mg)" FontSize="16" />
                 <Frame BorderColor="DarkOliveGreen"
-                       BackgroundColor="Transparent"
-                       Margin="10"
-                       Padding="0"
-                       CornerRadius="50">
+           BackgroundColor="Transparent"
+           Margin="10"
+           Padding="0"
+           CornerRadius="50">
 
                     <Frame Style="{StaticResource InnerFrameStyle}">
                         <Entry TextColor="Black"
-                               FontSize="18"
-                               Placeholder="Dosage"
-                               Keyboard="Numeric"
-                               PlaceholderColor="DarkOliveGreen"
-                                x:Name="DosageEntry"/>
+                   FontSize="18"
+                   Placeholder="Dosage"
+                   Keyboard="Numeric"
+                   PlaceholderColor="DarkOliveGreen"
+                    x:Name="DosageEntry"/>
                     </Frame>
 
                 </Frame>
@@ -68,18 +65,18 @@
             <StackLayout Orientation="Vertical" Margin="0,0,0,10">
                 <Label Text="Number of Pills" FontSize="16" />
                 <Frame BorderColor="DarkOliveGreen"
-                       BackgroundColor="Transparent"
-                       Margin="10"
-                       Padding="0"
-                       CornerRadius="50">
+           BackgroundColor="Transparent"
+           Margin="10"
+           Padding="0"
+           CornerRadius="50">
 
                     <Frame Style="{StaticResource InnerFrameStyle}">
                         <Entry TextColor="Black"
-                               FontSize="18"
-                               Placeholder="Number"
-                               Keyboard="Numeric"
-                                PlaceholderColor="DarkOliveGreen"
-                                x:Name="NumberOfPillsEntry"/>
+                   FontSize="18"
+                   Placeholder="Number"
+                   Keyboard="Numeric"
+                    PlaceholderColor="DarkOliveGreen"
+                    x:Name="NumberOfPillsEntry"/>
                     </Frame>
 
                 </Frame>
@@ -89,10 +86,10 @@
             <StackLayout Orientation="Vertical" Margin="0,0,0,10">
                 <Label Text="Time" FontSize="16" />
                 <Frame BorderColor="DarkOliveGreen"
-                       BackgroundColor="Transparent"
-                       Margin="15"
-                       Padding="0"
-                       CornerRadius="50">
+           BackgroundColor="Transparent"
+           Margin="15"
+           Padding="0"
+           CornerRadius="50">
 
                     <Frame Style="{StaticResource InnerFrameStyle}">
                         <TimePicker x:Name="TimePicker" Format="hh:mm" TextColor="Black" />
@@ -101,18 +98,16 @@
                 </Frame>
             </StackLayout>
 
-            <!-- Add Button -->
-            <Button Text="Add"
-                    Clicked="OnAddButtonClicked"
+            <!-- Edit Button -->
+            <Button Text="Edit"
+                    Clicked="OnEditButtonClicked"
                     BackgroundColor="DarkOliveGreen"
                     TextColor="White"
                     FontSize="18"
-                   CornerRadius="50"
-                      Margin="0,20,0,0"
-                     WidthRequest="100" 
-                    HeightRequest="50"
-                    />
+                    CornerRadius="50"
+                    Margin="0,20,0,0"
+                    WidthRequest="100" 
+                    HeightRequest="50"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
-

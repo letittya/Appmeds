@@ -135,8 +135,9 @@ namespace Appmeds
 
         private void EditMedication(Medication medication)
         {
-            // Logic for editing medication
+            Navigation.PushAsync(new EditMedPage(medication));
         }
+
 
         private async void DeleteMedication(Medication medication)
         {

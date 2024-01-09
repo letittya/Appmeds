@@ -12,7 +12,11 @@ namespace Appmeds
         public AddMedPage()
         {
             InitializeComponent();
+
+          
         }
+
+        
 
         private async void OnAddButtonClicked(object sender, EventArgs e)
         {
