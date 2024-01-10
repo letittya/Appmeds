@@ -27,7 +27,7 @@ namespace Appmeds.Droid
             var notification = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
                                     .SetContentTitle(title)
                                     .SetContentText(message)
-                                    .SetSmallIcon(Resource.Drawable.plus_green)
+                                    .SetSmallIcon(Resource.Drawable.notification_green)
                                     .SetContentIntent(pendingIntent)
                                     .Build();
 

@@ -17,31 +17,31 @@
                  Source="logout_button.png"
                  Clicked="OnLogoutClicked"
                  BackgroundColor="Transparent"
-                 Margin="10"
-                 WidthRequest="25"
-                 HeightRequest="25"
+                 Margin="10,0,0,0"
+                 WidthRequest="30"
+                 HeightRequest="30"
                  HorizontalOptions="Start"
-                 VerticalOptions="Start"/>
+                 VerticalOptions="Center"/>
 
             <!-- Title Label -->
-            <Label Grid.Row="0"
+            <Label Grid.Row="1"
                    Text="My Medication"
                    TextColor="DarkOliveGreen"
                    FontSize="30"
                    FontAttributes="Bold"
-                   HorizontalOptions="Start"
-                   VerticalOptions="CenterAndExpand"
-                   Margin="50,20,0,-40"/>
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="0,0,10,30"/>
 
             <!-- ImageButton to Add New Medication -->
-            <StackLayout Grid.Row="1">
+            <StackLayout Grid.Row="1" Grid.Column="0">
                 <ImageButton Source="plus_green.png"
                              Clicked="OnAddMedicationClicked"
                              CornerRadius="50"
                              VerticalOptions="Start"
-                             HorizontalOptions="CenterAndExpand"
-                             Margin="260,-4,0,30"
-                             HeightRequest="40"
+                             HorizontalOptions="End"
+                             Margin="0,0,20,30"
+                             HeightRequest="50"
                              WidthRequest="50"
                              BackgroundColor="#d0dcc4"/>
             </StackLayout>
