@@ -120,7 +120,7 @@ namespace Appmeds
                 CornerRadius = 20,
                 Margin = new Thickness(10),
                 Padding = new Thickness(10),
-                BackgroundColor = medication.IsTaken ? Color.FromHex("#BFD8B8") : Color.FromHex("#FFC0CB"),
+                BackgroundColor = medication.IsTaken ? Color.FromHex("#a9d49d") : Color.FromHex("#FFC0CB"),
                 BorderColor = Color.Gray
             };
 
@@ -132,7 +132,7 @@ namespace Appmeds
                     {
                         // When checked
                         medication.IsTaken = true;
-                        frame.BackgroundColor = Color.FromHex("#BFD8B8"); // Change to green
+                        frame.BackgroundColor = Color.FromHex("#a9d49d"); // Change to green
                         medication.NumberOfPills--;
 
                         if (medication.NumberOfPills <= 0)
