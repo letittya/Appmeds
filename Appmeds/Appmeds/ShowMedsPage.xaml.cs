@@ -128,33 +128,40 @@ namespace Appmeds
             {
                 if (sender is CheckBox cb)
                 {
+
                     if (cb.IsChecked)
                     {
-                        // When checked
                         medication.IsTaken = true;
-                        frame.BackgroundColor = Color.FromHex("#BFD8B8"); // Change to green
                         medication.NumberOfPills--;
-
+                        await UpdateMedicationStatus(medication.Key, medication);
+                        frame.BackgroundColor = Color.FromHex("#BFD8B8");
                         if (medication.NumberOfPills <= 0)
                         {
                             medication.NumberOfPills = 0; // Prevent going below 0
                             await DisplayAlert("Alert", $"You ran out of {medication.MedicationName}", "OK");
+                        }
+                        if (await AllMedicationsTaken())
+                        {
+                            bool resetConfirmation = await DisplayAlert("Congrats!", "You've taken all your pills today. Do you want to reset the list?", "Yes", "No");
+                            if (resetConfirmation)
+                            {
+                                await ResetAllMedications();
+                            }
                         }
                     }
                     else
                     {
                         // When unchecked
                         medication.IsTaken = false;
+                        await UpdateMedicationStatus(medication.Key, medication);
                         frame.BackgroundColor = Color.FromHex("#FFC0CB"); // Change back to red
                     }
 
-                    await UpdateMedicationStatus(medication.Key, medication);
-                    await LoadMedications(); // Reload medications to update the UI
+
+                    //await UpdateMedicationStatus(medication.Key, medication);
+                    await LoadMedications();
                 }
             };
-
-
-
 
 
             medicationsLayout.Children.Add(frame);
@@ -193,6 +200,46 @@ namespace Appmeds
         {
             Navigation.PushAsync(new EditMedPage(medication));
         }
+
+        private async Task<bool> AllMedicationsTaken()
+        {
+            var userId = Application.Current.Properties["UserId"] as string;
+            var medications = await firebase
+                                    .Child("Users")
+                                    .Child(userId)
+                                    .Child("Medications")
+                                    .OnceAsync<Medication>();
+
+            return medications.All(m => m.Object.IsTaken);
+        }
+
+        private async Task ResetAllMedications()
+        {
+            var userId = Application.Current.Properties["UserId"] as string;
+            var medications = await firebase
+                                    .Child("Users")
+                                    .Child(userId)
+                                    .Child("Medications")
+                                    .OnceAsync<Medication>();
+
+            foreach (var item in medications)
+            {
+                var medication = item.Object;
+                medication.IsTaken = false; // Reset to not taken
+
+                // Reschedule notification for next day
+                DateTime notifyTime = DateTime.Today.AddDays(1).Add(medication.Time);
+                DependencyService.Get<INotificationManager>().ScheduleNotification(medication.MedicationName, "Time to take your medication.", notifyTime);
+
+                await firebase
+                    .Child("Users")
+                    .Child(userId)
+                    .Child("Medications")
+                    .Child(item.Key)
+                    .PutAsync(medication);
+            }
+        }
+
 
 
         private async void DeleteMedication(Medication medication)

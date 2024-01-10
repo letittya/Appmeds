@@ -19,6 +19,10 @@ namespace Appmeds.Droid
     {
         public void ScheduleNotification(string title, string message, DateTime notifyTime)
         {
+            if (notifyTime < DateTime.Now)
+            {
+                notifyTime = notifyTime.AddDays(1);
+            }
             Intent alarmIntent = new Intent(Android.App.Application.Context, typeof(AlarmReceiver));
             alarmIntent.PutExtra("message", message);
             alarmIntent.PutExtra("title", title);
