@@ -133,13 +133,13 @@ namespace Appmeds
                     {
                         medication.IsTaken = true;
                         medication.NumberOfPills--;
-                        await UpdateMedicationStatus(medication.Key, medication);
-                        frame.BackgroundColor = Color.FromHex("#BFD8B8");
+                        frame.BackgroundColor = Color.FromHex("#a9d49d");
                         if (medication.NumberOfPills <= 0)
                         {
                             medication.NumberOfPills = 0; // Prevent going below 0
                             await DisplayAlert("Alert", $"You ran out of {medication.MedicationName}", "OK");
                         }
+                        await UpdateMedicationStatus(medication.Key, medication);
                         if (await AllMedicationsTaken())
                         {
                             bool resetConfirmation = await DisplayAlert("Congrats!", "You've taken all your pills today. Do you want to reset the list?", "Yes", "No");
